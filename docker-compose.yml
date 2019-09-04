@@ -13,11 +13,14 @@ services:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
       POSTGRES_DB: airflow
-      PGDATA: /var/lib/postgresql/data/pgdata
+      PGDATA: /var/lib/postgresql/data/postgres/data
+    deploy:
+      restart_policy:
+        condition: on-failure
     volumes:
       - type: bind
-        source: ./data/pgdata
-        target: /var/lib/postgresql/data/pgdata
+        source: ./data/postgres
+        target: /var/lib/postgresql/data/postgres
         volume:
           nocopy: true
     ports:
