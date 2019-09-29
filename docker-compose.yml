@@ -7,9 +7,6 @@ services:
     build:
       context: ./docker/Redis
       dockerfile: Dockerfile
-    deploy:
-      restart_policy:
-        condition: on-failure
     ports:
       - "6379:6379"
 
@@ -19,9 +16,6 @@ services:
     build:
       context: ./docker/Backend
       dockerfile: Dockerfile
-      deploy:
-        restart_policy:
-          condition: on-failure
     environment:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
@@ -35,9 +29,6 @@ services:
     build:
       context: ./docker/NiFi
       dockerfile: Dockerfile
-    deploy:
-      restart_policy:
-        condition: on-failure
     ports:
       - "9090:8080"
 
@@ -47,8 +38,5 @@ services:
     build:
       context: ./docker/NiFi-Registry
       dockerfile: Dockerfile
-    deploy:
-      restart_policy:
-        condition: on-failure
     ports:
       - "19090:18080"
