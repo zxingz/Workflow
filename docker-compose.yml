@@ -1,27 +1,66 @@
 version: '3.7'
 services:
+
+
   redis:
     container_name: workflow_redis
-    image:  redis:alpine
+    build:
+      context: ./docker/Redis
+      dockerfile: Dockerfile
+      cache_from:
+        - workflow_redis:latest
+      image:  workflow_redis:latest
+    deploy:
+      restart_policy:
+        condition: on-failure
     ports:
       - "6379:6379"
 
-  postgres:
-    container_name: workflow_postgres
-    image:  postgres:alpine
+
+  backend:
+    container_name: workflow_backend
+    build:
+      context: ./docker/Backend
+      dockerfile: Dockerfile
+      cache_from:
+        - workflow_backend:latest
+      image:  workflow_backend:latest
+      deploy:
+        restart_policy:
+          condition: on-failure
     environment:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
       POSTGRES_DB: airflow
-      PGDATA: /var/lib/postgresql/data/postgres/data
+    ports:
+      - "5432:5432"
+
+
+  nifi:
+    container_name: workflow_nifi
+    build:
+      context: ./docker/NiFi
+      dockerfile: Dockerfile
+      cache_from:
+        - workflow_nifi:latest
+      image:  workflow_nifi:latest
     deploy:
       restart_policy:
         condition: on-failure
-    volumes:
-      - type: bind
-        source: ./data/postgres
-        target: /var/lib/postgresql/data/postgres
-        volume:
-          nocopy: true
     ports:
-      - "5432:5432"
+      - "9090:8080"
+
+
+  nifi-registry:
+    container_name: workflow_nifi-registry
+    build:
+      context: ./docker/NiFi-Registry
+      dockerfile: Dockerfile
+      cache_from:
+        - workflow_nifi-registry:latest
+      image:  workflow_nifi-registry:latest
+    deploy:
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "19090:18080"
