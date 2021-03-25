@@ -1,5 +1,5 @@
 pytest==4.6.3
-pyyaml==5.1.1
+pyyaml==5.4
 redis==3.2.1
 apache-airflow[crypto,ldap,password,celery,postgres,redis,flower]==1.10.2
 Flask-Bcrypt==0.7.1
