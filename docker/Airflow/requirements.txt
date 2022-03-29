@@ -3,5 +3,5 @@ pyyaml==5.1.1
 redis==3.2.1
 apache-airflow[crypto,ldap,password,celery,postgres,redis,flower]==1.10.2
 Flask-Bcrypt==0.7.1
-paramiko==2.4.2
+paramiko==2.10.1
 sshtunnel==0.1.4
